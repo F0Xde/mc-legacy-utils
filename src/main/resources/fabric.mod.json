@@ -1,26 +1,25 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "legacyutils",
   "version": "${version}",
-  "name": "Example Mod",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "Legacy Utils",
+  "description": "General utilities for legacy Minecraft",
   "authors": [
-    "Me!"
+    "_F0X"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/F0Xde/legacy-fabric-example"
+    "sources": "https://github.com/F0Xde/mc-legacy-utils"
   },
-  "license": "CC0-1.0",
-  "icon": "assets/modid/icon.png",
+  "license": "Apache-2.0",
+  "icon": "assets/legacyutils/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "com.example.modid.ExampleModKt::init"
+      "de.f0x.legacyutils.LegacyUtilsKt::init"
     ]
   },
   "mixins": [
-    "modid.mixins.json"
+    "legacyutils.mixins.json"
   ],
   "depends": {
     "minecraft": "1.8.x",

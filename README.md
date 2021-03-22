@@ -1,9 +1,4 @@
-# Legacy Fabric Kotlin Example Mod
+# Minecraft Legacy Utils
 
-## Setup
-
-Edit build.gradle.kts and fabric.mod.json to suit your needs (replace all occurrences of `modid` with your own mod ID).
-
-## License
-
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+General client utilities for legacy Minecraft versions (currently only 1.8)
+using [Legacy Fabric](https://github.com/Legacy-Fabric)

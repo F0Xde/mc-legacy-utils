@@ -1,4 +1,4 @@
-package com.example.modid.mixin;
+package de.f0x.legacyutils.mixin;
 
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;

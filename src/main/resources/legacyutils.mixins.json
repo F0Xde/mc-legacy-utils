@@ -1,10 +1,8 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "com.example.modid.mixin",
+  "package": "de.f0x.legacyutils.mixin",
   "compatibilityLevel": "JAVA_8",
-  "mixins": [
-  ],
   "client": [
     "ExampleMixin"
   ],

@@ -8,7 +8,7 @@ plugins {
 }
 
 version = "0.1.0"
-group = "com.example"
+group = "de.f0x"
 
 repositories {
     mavenCentral()

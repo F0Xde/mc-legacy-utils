@@ -1,4 +1,4 @@
-rootProject.name = "fabric-example-mod"
+rootProject.name = "mc-legacy-utils"
 
 pluginManagement {
     repositories {

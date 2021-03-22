@@ -16,6 +16,6 @@ public abstract class MinecraftClientMixin {
 
     @Redirect(method = "method_2256", at = @At(value = "INVOKE", target = "Ljava/lang/System;gc()V"))
     void gc() {
-        LOGGER.info("Redirecting GC on world load");
+        LOGGER.info("Redirecting GC on world connect");
     }
 }

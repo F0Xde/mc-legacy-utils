@@ -4,6 +4,7 @@
   "package": "de.f0x.legacyutils.mixin",
   "compatibilityLevel": "JAVA_8",
   "client": [
+    "ClientPlayerEntityMixin",
     "MinecraftClientMixin"
   ],
   "injectors": {

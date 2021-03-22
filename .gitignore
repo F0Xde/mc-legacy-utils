@@ -1,0 +1,23 @@
+# Gradle
+.gradle/
+build/
+out/
+classes/
+
+# Fabric
+run/
+
+# Editors
+.idea/
+*.iml
+*.ipr
+*.iws
+*.launch
+.classpath
+.project
+.settings/
+.vscode/
+bin/
+
+# Other
+.DS_Store

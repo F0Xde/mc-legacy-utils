@@ -1,0 +1,28 @@
+name: Publish Release
+on:
+  push:
+    tags: ['v*']
+
+jobs:
+  release:
+    needs: [release]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
+        with:
+          java-version: "8"
+      - run: chmod +x gradlew
+      - name: Build jar
+        run: ./gradlew build
+      - name: Find built jars
+        id: find_jars
+        run: |
+          echo "::set-output name=jars::$(find build/libs/ -type f)"
+      - name: Upload binary
+        uses: softprops/action-gh-release@v1
+        with:
+          draft: true
+          files: ${{ steps.find_jars.outputs.jars }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

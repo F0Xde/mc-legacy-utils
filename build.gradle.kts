@@ -13,6 +13,7 @@ group = "de.f0x"
 repositories {
     mavenCentral()
     maven("https://dl.bintray.com/legacy-fabric/Legacy-Fabric-Maven")
+    maven("https://libraries.minecraft.net")
 }
 
 minecraft {

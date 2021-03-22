@@ -14,14 +14,10 @@ jobs:
       - run: chmod +x gradlew
       - name: Build jar
         run: ./gradlew build
-      - name: Find built jars
-        id: find_jars
-        run: |
-          echo "::set-output name=jars::$(find build/libs/ -type f)"
-      - name: Upload binary
+      - name: Create release
         uses: softprops/action-gh-release@v1
         with:
           draft: true
-          files: ${{ steps.find_jars.outputs.jars }}
+          files: build/libs/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

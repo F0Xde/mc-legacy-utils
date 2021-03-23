@@ -6,6 +6,7 @@
   "client": [
     "AbstractFileResourcePackMixin",
     "ClientPlayerEntityMixin",
+    "GameRendererMixin",
     "MinecraftClientMixin"
   ],
   "injectors": {

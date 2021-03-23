@@ -1,9 +1,9 @@
 package de.f0x.legacyutils.mixin;
 
-import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.client.gui.screen.ResourcePackScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resource.ResourcePackLoader;
+import net.minecraft.util.Formatting;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -20,7 +20,7 @@ public class ResourcePackScreenMixin extends Screen {
     )
     boolean sortResourcePacks(List<ResourcePackLoader.Entry> packs, Collection<ResourcePackLoader.Entry> selectedPacks) {
         boolean changed = packs.removeAll(selectedPacks);
-        packs.sort(Comparator.comparing(entry -> ChatFormatting.stripFormatting(entry.getName())));
+        packs.sort(Comparator.comparing(entry -> Formatting.strip(entry.getName())));
         return changed;
     }
 }

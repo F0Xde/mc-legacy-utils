@@ -13,7 +13,7 @@ import java.util.Comparator;
 import java.util.List;
 
 @Mixin(ResourcePackScreen.class)
-public class ResourcePackScreenMixin extends Screen {
+public abstract class ResourcePackScreenMixin extends Screen {
     @Redirect(
         method = "init",
         at = @At(value = "INVOKE", target = "Ljava/util/List;removeAll(Ljava/util/Collection;)Z")

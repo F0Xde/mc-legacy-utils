@@ -13,7 +13,7 @@ import java.awt.image.BufferedImage;
 public abstract class AbstractFileResourcePackMixin {
     private static final int MAX_SIZE = 64;
 
-    @Inject(method = "method_4367", at = @At("RETURN"), cancellable = true)
+    @Inject(method = "getIcon", at = @At("RETURN"), cancellable = true)
     void scaleIcon(CallbackInfoReturnable<BufferedImage> cir) {
         BufferedImage original = cir.getReturnValue();
         if (original != null && original.getWidth() > MAX_SIZE) {

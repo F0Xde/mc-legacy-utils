@@ -14,7 +14,7 @@ public abstract class MinecraftClientMixin {
     @Final
     private static Logger LOGGER;
 
-    @Redirect(method = "method_2256", at = @At(value = "INVOKE", target = "Ljava/lang/System;gc()V"))
+    @Redirect(method = "connect(Lnet/minecraft/client/world/ClientWorld;Ljava/lang/String;)V", at = @At(value = "INVOKE", target = "Ljava/lang/System;gc()V"))
     void gc() {
         LOGGER.info("Redirecting GC on world connect");
     }

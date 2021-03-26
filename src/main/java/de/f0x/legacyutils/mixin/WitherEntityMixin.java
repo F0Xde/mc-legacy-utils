@@ -14,7 +14,7 @@ public abstract class WitherEntityMixin extends HostileEntity implements BossBar
     }
 
     @Override
-    public Text getBossName() {
+    public Text title() {
         return getName();
     }
 }

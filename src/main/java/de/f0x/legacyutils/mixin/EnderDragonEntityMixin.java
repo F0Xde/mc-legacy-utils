@@ -14,7 +14,7 @@ public abstract class EnderDragonEntityMixin extends MobEntity implements BossBa
     }
 
     @Override
-    public Text getBossName() {
+    public Text title() {
         return getName();
     }
 }

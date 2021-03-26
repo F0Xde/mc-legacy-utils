@@ -12,22 +12,22 @@ group = "de.f0x"
 
 repositories {
     mavenCentral()
-    maven("https://dl.bintray.com/legacy-fabric/Legacy-Fabric-Maven")
+    maven("https://maven.legacyfabric.net")
     maven("https://libraries.minecraft.net")
 }
 
 minecraft {
     intermediaryUrl = Function {
-        "https://dl.bintray.com/legacy-fabric/Legacy-Fabric-Maven/net/fabricmc/intermediary/$it/intermediary-$it-v2.jar"
+        "https://maven.legacyfabric.net/net/fabricmc/intermediary/$it/intermediary-$it-v2.jar"
     }
 }
 
-val loaderDep = "net.fabricmc:fabric-loader-1.8.9:0.9.3+build.202009100647"
+val loaderDep = "net.fabricmc:fabric-loader-1.8.9:0.11.1+build.202102220648"
 
 dependencies {
     implementation("com.google.guava:guava:23.5-jre")
     minecraft("com.mojang:minecraft:1.8.9")
-    mappings("net.fabricmc:yarn:1.8.9+build.202102062228:v2")
+    mappings("net.fabricmc:yarn:1.8.9+build.202103240745:v2")
     modImplementation(loaderDep) {
         exclude(module = "guava")
     }

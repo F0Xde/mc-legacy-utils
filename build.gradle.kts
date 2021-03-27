@@ -3,8 +3,9 @@ import java.util.function.Function
 
 plugins {
     kotlin("jvm") version "1.4.31"
-    `maven-publish`
+    kotlin("plugin.serialization") version "1.4.31"
     id("fabric-loom") version "0.6-SNAPSHOT"
+    `maven-publish`
 }
 
 version = "0.1.0"
@@ -56,12 +57,19 @@ configurations.all {
     }
 }
 
+
 val javaVersion = JavaVersion.VERSION_1_8
 
 java {
     sourceCompatibility = javaVersion
     targetCompatibility = javaVersion
     withSourcesJar()
+}
+
+kotlin {
+    sourceSets.all {
+        languageSettings.useExperimentalAnnotation("kotlin.io.path.ExperimentalPathApi")
+    }
 }
 
 tasks {

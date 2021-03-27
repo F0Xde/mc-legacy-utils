@@ -1,6 +1,6 @@
 package de.f0x.legacyutils.mixin;
 
-import de.f0x.legacyutils.LegacyClient;
+import de.f0x.legacyutils.ConfigManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.GameRenderer;
 import org.spongepowered.asm.mixin.Mixin;
@@ -22,7 +22,7 @@ public abstract class GameRendererMixin {
         at = @At(value = "FIELD", target = "Lnet/minecraft/client/render/GameRenderer;lastMovementFovMultiplier:F")
     )
     float getLastFovModifier(GameRenderer renderer) {
-        return ((LegacyClient) client).getConfig().getDynamicFov() ? lastMovementFovMultiplier : 1;
+        return ConfigManager.INSTANCE.getConfig().getDynamicFov() ? lastMovementFovMultiplier : 1;
     }
 
     @Redirect(
@@ -30,6 +30,6 @@ public abstract class GameRendererMixin {
         at = @At(value = "FIELD", target = "Lnet/minecraft/client/render/GameRenderer;movementFovMultiplier:F")
     )
     float getFovModifier(GameRenderer renderer) {
-        return ((LegacyClient) client).getConfig().getDynamicFov() ? movementFovMultiplier : 1;
+        return ConfigManager.INSTANCE.getConfig().getDynamicFov() ? movementFovMultiplier : 1;
     }
 }

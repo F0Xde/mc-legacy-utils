@@ -6,11 +6,9 @@
   "client": [
     "AbstractFileResourcePackMixin",
     "ClientPlayerEntityMixin",
-    "EnderDragonEntityMixin",
     "GameRendererMixin",
     "MinecraftClientMixin",
-    "ResourcePackScreenMixin",
-    "WitherEntityMixin"
+    "ResourcePackScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

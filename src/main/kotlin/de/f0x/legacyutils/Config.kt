@@ -14,7 +14,9 @@ import kotlin.io.path.writeText
 @Serializable
 data class Config(val dynamicFov: Boolean)
 
-class ConfigManager(private val path: Path = Paths.get("legacyutils.json")) {
+object ConfigManager {
+    private val path: Path = Paths.get("legacyutils.json")
+
     var config = Config(dynamicFov = true)
         private set
 

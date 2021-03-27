@@ -35,11 +35,18 @@ dependencies {
     modImplementation("net.fabricmc.fabric-api:fabric-api:0.10.3")
     modImplementation("net.fabricmc:fabric-language-kotlin:1.5.0+kotlin.1.4.31")
 
+    implInclude("com.mojang:brigadier:1.0.17")
+
     if (isMac) {
         implementation("org.lwjgl.lwjgl:lwjgl_util:2.9.4-nightly-20150209")
         implementation("org.lwjgl.lwjgl:lwjgl:2.9.4-nightly-20150209")
         implementation("org.lwjgl.lwjgl:lwjgl-platform:2.9.4-nightly-20150209")
     }
+}
+
+fun DependencyHandlerScope.implInclude(dependencyNotation: Any) {
+    modImplementation(dependencyNotation)
+    include(dependencyNotation)
 }
 
 configurations.all {

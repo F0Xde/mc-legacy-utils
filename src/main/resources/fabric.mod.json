@@ -13,11 +13,6 @@
   "license": "Apache-2.0",
   "icon": "assets/legacyutils/icon.png",
   "environment": "*",
-  "entrypoints": {
-    "main": [
-      "de.f0x.legacyutils.LegacyUtilsKt::init"
-    ]
-  },
   "mixins": [
     "legacyutils.mixins.json"
   ],

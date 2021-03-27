@@ -3,6 +3,7 @@ package de.f0x.legacyutils.mixin;
 import de.f0x.legacyutils.Config;
 import de.f0x.legacyutils.ConfigManager;
 import de.f0x.legacyutils.LegacyClient;
+import de.f0x.legacyutils.LegacyUtilsKt;
 import net.minecraft.client.MinecraftClient;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -25,6 +26,7 @@ public abstract class MinecraftClientMixin implements LegacyClient {
     @Inject(method = "initializeGame", at = @At("HEAD"))
     void init(CallbackInfo ci) {
         configManager.load();
+        LegacyUtilsKt.init((MinecraftClient) (Object) this);
     }
 
     @Redirect(method = "connect(Lnet/minecraft/client/world/ClientWorld;Ljava/lang/String;)V", at = @At(value = "INVOKE", target = "Ljava/lang/System;gc()V"))

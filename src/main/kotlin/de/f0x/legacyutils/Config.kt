@@ -12,12 +12,15 @@ import kotlin.io.path.readText
 import kotlin.io.path.writeText
 
 @Serializable
-data class Config(val dynamicFov: Boolean)
+data class Config(
+    val staticFov: Boolean = false,
+    val fullBright: Boolean = false
+)
 
 object ConfigManager {
     private val path: Path = Paths.get("legacyutils.json")
 
-    var config = Config(dynamicFov = true)
+    var config = Config()
         private set
 
     @Synchronized

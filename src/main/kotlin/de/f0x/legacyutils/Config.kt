@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import java.io.IOException
 import java.nio.file.Path
 import java.nio.file.Paths
 import kotlin.io.path.createDirectories
@@ -25,16 +26,26 @@ object ConfigManager {
 
     @Synchronized
     fun load() {
-        if (!path.exists()) {
-            save()
+        if (path.exists()) {
+            try {
+                config = Json.decodeFromString(path.readText())
+            } catch (e: Exception) {
+                Log.error("Error loading config, replacing with default", e)
+                save()
+            }
         } else {
-            config = Json.decodeFromString(path.readText())
+            Log.info("Config does not exist, saving default")
+            save()
         }
     }
 
     @Synchronized
     fun save() {
-        path.parent?.createDirectories()
-        path.writeText(PrettyJson.encodeToString(config))
+        try {
+            path.parent?.createDirectories()
+            path.writeText(PrettyJson.encodeToString(config))
+        } catch (e: IOException) {
+            Log.error("Error saving config", e)
+        }
     }
 }

@@ -9,9 +9,11 @@
     "GameOptionsMixin",
     "GameRendererMixin",
     "MinecraftClientMixin",
-    "ResourcePackScreenMixin",
-    "OptionsScreenMixin",
-    "TitleScreenMixin"
+    "gui.AchievementNotificationMixin",
+    "gui.IngameHudMixin",
+    "gui.OptionsScreenMixin",
+    "gui.ResourcePackScreenMixin",
+    "gui.TitleScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

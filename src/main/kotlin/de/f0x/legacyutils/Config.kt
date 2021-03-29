@@ -15,7 +15,9 @@ import kotlin.io.path.writeText
 @Serializable
 data class Config(
     val staticFov: Boolean = false,
-    val fullBright: Boolean = false
+    val fullBright: Boolean = false,
+    val noAchievementNotification: Boolean = false,
+    val noPumpkinBlur: Boolean = false
 )
 
 object ConfigManager {

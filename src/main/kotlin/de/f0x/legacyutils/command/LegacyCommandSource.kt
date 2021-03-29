@@ -1,6 +1,6 @@
 package de.f0x.legacyutils.command
 
-import de.f0x.legacyutils.send
+import de.f0x.legacyutils.util.send
 import net.minecraft.client.network.ClientPlayerEntity
 import net.minecraft.text.Text
 

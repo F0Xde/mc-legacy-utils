@@ -6,9 +6,11 @@
   "client": [
     "AbstractFileResourcePackMixin",
     "ClientPlayerEntityMixin",
+    "GameOptionsMixin",
     "GameRendererMixin",
     "MinecraftClientMixin",
     "ResourcePackScreenMixin",
+    "OptionsScreenMixin",
     "TitleScreenMixin"
   ],
   "injectors": {

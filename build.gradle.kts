@@ -28,7 +28,7 @@ val loaderDep = "net.fabricmc:fabric-loader-1.8.9:0.11.1+build.202102220648"
 dependencies {
     implementation("com.google.guava:guava:23.5-jre")
     minecraft("com.mojang:minecraft:1.8.9")
-    mappings("net.fabricmc:yarn:1.8.9+build.202103240745:v2")
+    mappings("net.fabricmc:yarn:1.8.9+build.202103291533:v2")
     modImplementation(loaderDep) {
         exclude(module = "guava")
     }

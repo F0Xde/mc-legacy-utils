@@ -1,4 +1,4 @@
-rootProject.name = "mc-legacy-utils"
+rootProject.name = "legacy-utils"
 
 pluginManagement {
     repositories {

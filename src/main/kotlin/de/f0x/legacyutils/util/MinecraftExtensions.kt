@@ -1,5 +1,6 @@
-package de.f0x.legacyutils
+package de.f0x.legacyutils.util
 
+import de.f0x.legacyutils.CHAT_PREFIX
 import net.minecraft.client.network.ClientPlayerEntity
 import net.minecraft.entity.Entity
 import net.minecraft.text.LiteralText

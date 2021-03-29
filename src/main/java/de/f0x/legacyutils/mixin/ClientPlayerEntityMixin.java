@@ -15,8 +15,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static de.f0x.legacyutils.MinecraftExtensionsKt.getPitch;
-import static de.f0x.legacyutils.MinecraftExtensionsKt.getYaw;
+import static de.f0x.legacyutils.util.MinecraftExtensionsKt.getPitch;
+import static de.f0x.legacyutils.util.MinecraftExtensionsKt.getYaw;
 
 @Mixin(ClientPlayerEntity.class)
 public abstract class ClientPlayerEntityMixin extends AbstractClientPlayerEntity {

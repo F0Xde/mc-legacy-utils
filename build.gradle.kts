@@ -32,7 +32,6 @@ dependencies {
     modImplementation(loaderDep) {
         exclude(module = "guava")
     }
-    modImplementation("net.fabricmc.fabric-api:fabric-api:0.10.3")
     modImplementation("net.fabricmc:fabric-language-kotlin:1.5.0+kotlin.1.4.31")
 
     implInclude("com.mojang:brigadier:1.0.17")

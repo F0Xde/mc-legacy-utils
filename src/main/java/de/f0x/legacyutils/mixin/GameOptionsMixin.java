@@ -27,7 +27,7 @@ public abstract class GameOptionsMixin {
     }
 
     @Redirect(
-        method = "method_2336",
+        method = "load",
         at = @At(value = "FIELD", target = "Lnet/minecraft/client/options/GameOptions;realmsNotifications:Z")
     )
     void setRealmsNotifications(GameOptions options, boolean value) {

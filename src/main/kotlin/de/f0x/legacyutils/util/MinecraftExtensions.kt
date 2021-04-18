@@ -1,6 +1,7 @@
 package de.f0x.legacyutils.util
 
 import de.f0x.legacyutils.CHAT_PREFIX
+import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.network.ClientPlayerEntity
 import net.minecraft.entity.Entity
 import net.minecraft.text.LiteralText
@@ -25,3 +26,5 @@ fun ClientPlayerEntity.send(text: String, prefixed: Boolean = true) {
 fun ClientPlayerEntity.send(text: Text, prefixed: Boolean = true) {
     sendMessage(if (prefixed) LiteralText(CHAT_PREFIX).append(text) else text)
 }
+
+object DummyScreen : Screen()

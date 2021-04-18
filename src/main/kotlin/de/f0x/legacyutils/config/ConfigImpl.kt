@@ -1,11 +1,14 @@
 package de.f0x.legacyutils.config
 
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
 typealias ConfigProperty<T> = ReadOnlyProperty<Any?, ConfigKey<T>>
 
-abstract class ConfigObject {
+abstract class ConfigDecl {
     companion object {
         fun <T> config(default: T, build: ConfigBuilder<T>.() -> Unit = {}): ConfigProperty<T> =
             ConfigBuilder(default).apply(build).build()
@@ -33,28 +36,28 @@ open class ConfigBuilder<T>(val default: T) {
     open fun build(): ConfigProperty<T> = ConfigDelegate(default, desc)
 }
 
-open class IntBuilder(default: Int) : ConfigBuilder<Int>(default) {
+class IntBuilder(default: Int) : ConfigBuilder<Int>(default) {
     var min = Int.MIN_VALUE
     var max = Int.MAX_VALUE
 
     override fun build(): ConfigProperty<Int> = IntDelegate(default, desc, min, max)
 }
 
-open class LongBuilder(default: Long) : ConfigBuilder<Long>(default) {
+class LongBuilder(default: Long) : ConfigBuilder<Long>(default) {
     var min = Long.MIN_VALUE
     var max = Long.MAX_VALUE
 
     override fun build(): ConfigProperty<Long> = LongDelegate(default, desc, min, max)
 }
 
-open class FloatBuilder(default: Float) : ConfigBuilder<Float>(default) {
+class FloatBuilder(default: Float) : ConfigBuilder<Float>(default) {
     var min = Float.NEGATIVE_INFINITY
     var max = Float.POSITIVE_INFINITY
 
     override fun build(): ConfigProperty<Float> = FloatDelegate(default, desc, min, max)
 }
 
-open class DoubleBuilder(default: Double) : ConfigBuilder<Double>(default) {
+class DoubleBuilder(default: Double) : ConfigBuilder<Double>(default) {
     var min = Double.NEGATIVE_INFINITY
     var max = Double.POSITIVE_INFINITY
 
@@ -136,3 +139,22 @@ private class DoubleKey(
     val min: Double,
     val max: Double,
 ) : ConfigKey<Double>(name, default)
+
+private sealed class ConfigNode
+
+private class ConfigObject(val entries: Map<ConfigKey<*>, ConfigNode>) : ConfigNode()
+
+private class ConfigValue<T>(val value: T) : ConfigNode()
+
+private class ConfigSerializer : KSerializer<ConfigNode> {
+    override val descriptor = TODO()
+
+    override fun deserialize(decoder: Decoder): ConfigNode {
+        TODO("Not yet implemented")
+    }
+
+    override fun serialize(encoder: Encoder, value: ConfigNode) {
+        TODO("Not yet implemented")
+    }
+
+}

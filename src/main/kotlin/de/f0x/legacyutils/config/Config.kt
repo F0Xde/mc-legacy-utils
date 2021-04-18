@@ -14,7 +14,7 @@ import kotlin.io.path.exists
 import kotlin.io.path.readText
 import kotlin.io.path.writeText
 
-object Config : ConfigObject() {
+object Config : ConfigDecl() {
     val staticFov by bool()
     val fullBright by bool()
     val noAchievementNotification by bool()

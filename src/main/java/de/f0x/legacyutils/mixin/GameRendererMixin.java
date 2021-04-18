@@ -1,6 +1,6 @@
 package de.f0x.legacyutils.mixin;
 
-import de.f0x.legacyutils.ConfigManager;
+import de.f0x.legacyutils.config.ConfigManager;
 import net.minecraft.client.options.GameOptions;
 import net.minecraft.client.render.GameRenderer;
 import org.spongepowered.asm.mixin.Mixin;

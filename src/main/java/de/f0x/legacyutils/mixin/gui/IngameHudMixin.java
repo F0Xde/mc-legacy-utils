@@ -1,6 +1,6 @@
 package de.f0x.legacyutils.mixin.gui;
 
-import de.f0x.legacyutils.ConfigManager;
+import de.f0x.legacyutils.config.ConfigManager;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.util.Window;

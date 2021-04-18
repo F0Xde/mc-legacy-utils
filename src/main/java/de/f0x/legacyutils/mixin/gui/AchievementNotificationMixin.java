@@ -1,6 +1,6 @@
 package de.f0x.legacyutils.mixin.gui;
 
-import de.f0x.legacyutils.ConfigManager;
+import de.f0x.legacyutils.config.ConfigManager;
 import net.minecraft.client.gui.AchievementNotification;
 import net.minecraft.client.gui.DrawableHelper;
 import org.spongepowered.asm.mixin.Mixin;

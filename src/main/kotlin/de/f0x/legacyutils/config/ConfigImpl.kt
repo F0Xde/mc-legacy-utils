@@ -20,6 +20,7 @@ import kotlin.reflect.KProperty1
 import kotlin.reflect.KType
 import kotlin.reflect.full.isSubclassOf
 import kotlin.reflect.full.memberProperties
+import kotlin.reflect.jvm.isAccessible
 import kotlin.reflect.typeOf
 
 typealias ConfigProperty<T> = ReadOnlyProperty<Any, ConfigKey<T>>
@@ -59,6 +60,7 @@ abstract class ConfigDecl {
             }
         }
         for (it in this::class.memberProperties) {
+            it.isAccessible = true
             @Suppress("UNCHECKED_CAST")
             val delegate = (it as KProperty1<ConfigDecl, *>).getDelegate(this) ?: continue
             if (delegate is ConfigNode) {
@@ -159,6 +161,10 @@ class ConfigObject(private val content: Map<String, ConfigNode>) :
             content[key]?.fromJson(value)
         }
     }
+
+    override fun equals(other: Any?) = content == other
+    override fun hashCode() = content.hashCode()
+    override fun toString() = "ConfigObject($content)"
 }
 
 open class ConfigValue<T>(

@@ -41,6 +41,11 @@ dependencies {
         implementation("org.lwjgl.lwjgl:lwjgl:2.9.4-nightly-20150209")
         implementation("org.lwjgl.lwjgl:lwjgl-platform:2.9.4-nightly-20150209")
     }
+
+    val kotestVersion = "4.4.3"
+    testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
+    testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
+    testImplementation("io.kotest:kotest-property:$kotestVersion")
 }
 
 fun DependencyHandlerScope.implInclude(dependencyNotation: Any) {
@@ -85,6 +90,10 @@ tasks {
 
     withType<JavaCompile> {
         options.encoding = "UTF-8"
+    }
+
+    withType<Test> {
+        useJUnitPlatform()
     }
 
     processResources {

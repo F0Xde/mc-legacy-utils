@@ -1,6 +1,6 @@
 package de.f0x.legacyutils.mixin;
 
-import de.f0x.legacyutils.config.ConfigManager;
+import de.f0x.legacyutils.config.ConfigManagerOld;
 import net.minecraft.client.options.GameOptions;
 import net.minecraft.client.render.GameRenderer;
 import org.spongepowered.asm.mixin.Mixin;
@@ -20,7 +20,7 @@ public abstract class GameRendererMixin {
         at = @At(value = "FIELD", target = "Lnet/minecraft/client/render/GameRenderer;lastMovementFovMultiplier:F")
     )
     float getLastFovModifier(GameRenderer renderer) {
-        return ConfigManager.INSTANCE.getConfig().getStaticFov() ? 1 : lastMovementFovMultiplier;
+        return ConfigManagerOld.INSTANCE.getConfig().getStaticFov() ? 1 : lastMovementFovMultiplier;
     }
 
     @Redirect(
@@ -28,7 +28,7 @@ public abstract class GameRendererMixin {
         at = @At(value = "FIELD", target = "Lnet/minecraft/client/render/GameRenderer;movementFovMultiplier:F")
     )
     float getFovModifier(GameRenderer renderer) {
-        return ConfigManager.INSTANCE.getConfig().getStaticFov() ? 1 : movementFovMultiplier;
+        return ConfigManagerOld.INSTANCE.getConfig().getStaticFov() ? 1 : movementFovMultiplier;
     }
 
     @Redirect(
@@ -36,6 +36,6 @@ public abstract class GameRendererMixin {
         at = @At(value = "FIELD", target = "Lnet/minecraft/client/options/GameOptions;gamma:F")
     )
     float getGamma(GameOptions options) {
-        return ConfigManager.INSTANCE.getConfig().getFullBright() ? 100 : options.gamma;
+        return ConfigManagerOld.INSTANCE.getConfig().getFullBright() ? 100 : options.gamma;
     }
 }

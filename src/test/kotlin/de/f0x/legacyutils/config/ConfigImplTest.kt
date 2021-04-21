@@ -8,8 +8,8 @@ class ConfigImplTest : FunSpec({
         Outer.Inner.prop.path shouldBe listOf("Outer", "Inner", "prop")
     }
 
-    test("ConfigProperty should have correct default") {
-        Outer.Inner.prop.default shouldBe 42
+    test("ConfigProperty should have correct class") {
+        Outer.Inner.prop.type shouldBe 42
     }
 })
 

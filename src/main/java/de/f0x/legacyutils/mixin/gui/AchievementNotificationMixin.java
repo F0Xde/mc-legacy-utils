@@ -1,6 +1,6 @@
 package de.f0x.legacyutils.mixin.gui;
 
-import de.f0x.legacyutils.config.ConfigManager;
+import de.f0x.legacyutils.config.ConfigManagerOld;
 import net.minecraft.client.gui.AchievementNotification;
 import net.minecraft.client.gui.DrawableHelper;
 import org.spongepowered.asm.mixin.Mixin;
@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class AchievementNotificationMixin extends DrawableHelper {
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     void onTick(CallbackInfo ci) {
-        if (ConfigManager.INSTANCE.getConfig().getNoAchievementNotification()) {
+        if (ConfigManagerOld.INSTANCE.getConfig().getNoAchievementNotification()) {
             ci.cancel();
         }
     }

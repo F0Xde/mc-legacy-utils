@@ -1,6 +1,6 @@
 package de.f0x.legacyutils.mixin.gui;
 
-import de.f0x.legacyutils.config.ConfigManager;
+import de.f0x.legacyutils.config.ConfigManagerOld;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.util.Window;
@@ -22,7 +22,7 @@ public abstract class IngameHudMixin extends DrawableHelper {
         )
     )
     void renderPumpkinBlur(InGameHud hud, Window window) {
-        if (!ConfigManager.INSTANCE.getConfig().getNoPumpkinBlur()) {
+        if (!ConfigManagerOld.INSTANCE.getConfig().getNoPumpkinBlur()) {
             renderPumpkinBlur(window);
         }
     }

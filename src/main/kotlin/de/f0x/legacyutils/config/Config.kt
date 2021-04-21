@@ -21,6 +21,8 @@ object Config : ConfigDecl() {
     val noPumpkinBlur by bool()
 }
 
+val ConfigManager = ConfigHolder(Config)
+
 @Serializable
 data class ConfigOld(
     val staticFov: Boolean = false,
@@ -29,7 +31,7 @@ data class ConfigOld(
     val noPumpkinBlur: Boolean = false
 )
 
-object ConfigManager {
+object ConfigManagerOld {
     private val path: Path = Paths.get("legacyutils.json")
 
     var config = ConfigOld()

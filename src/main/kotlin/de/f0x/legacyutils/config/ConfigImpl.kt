@@ -1,72 +1,193 @@
 package de.f0x.legacyutils.config
 
+import de.f0x.legacyutils.Log
+import de.f0x.legacyutils.PrettyJson
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.serializer
+import java.io.IOException
+import java.nio.file.Path
+import kotlin.io.path.createDirectories
+import kotlin.io.path.exists
+import kotlin.io.path.readText
+import kotlin.io.path.writeText
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
+import kotlin.reflect.KProperty1
+import kotlin.reflect.KType
+import kotlin.reflect.full.isSubclassOf
+import kotlin.reflect.full.memberProperties
+import kotlin.reflect.typeOf
 
-typealias SimpleConfigProperty<T> = ConfigProperty<ConfigKey<T>>
-typealias ConfigProperty<T> = ReadOnlyProperty<Any, T>
+typealias ConfigProperty<T> = ReadOnlyProperty<Any, ConfigKey<T>>
 
 abstract class ConfigDecl {
     companion object {
-        fun <T> config(default: T, build: ConfigBuilder<T>.() -> Unit = {}): SimpleConfigProperty<T> =
-            ConfigBuilder(default).apply(build).build()
+        inline fun <reified T : Any> config(
+            default: T,
+            build: ConfigBuilder<T>.() -> Unit = {}
+        ): ConfigProperty<T> =
+            ConfigBuilder(default, typeOf<T>()).apply(build).build()
 
-        fun bool(
+        inline fun bool(
             default: Boolean = false,
             build: ConfigBuilder<Boolean>.() -> Unit = {}
-        ): SimpleConfigProperty<Boolean> =
-            ConfigBuilder(default).apply(build).build()
+        ): ConfigProperty<Boolean> =
+            ConfigBuilder(default, typeOf<Boolean>()).apply(build).build()
 
-        fun int(default: Int, build: IntBuilder.() -> Unit = {}): ConfigProperty<IntKey> =
+        inline fun int(default: Int, build: IntBuilder.() -> Unit = {}): ConfigProperty<Int> =
             IntBuilder(default).apply(build).build()
 
-        fun long(default: Long, build: LongBuilder.() -> Unit = {}): ConfigProperty<LongKey> =
+        inline fun long(default: Long, build: LongBuilder.() -> Unit = {}): ConfigProperty<Long> =
             LongBuilder(default).apply(build).build()
 
-        fun float(default: Float, build: FloatBuilder.() -> Unit = {}): ConfigProperty<FloatKey> =
+        inline fun float(default: Float, build: FloatBuilder.() -> Unit = {}): ConfigProperty<Float> =
             FloatBuilder(default).apply(build).build()
 
-        fun double(default: Double, build: DoubleBuilder.() -> Unit = {}): ConfigProperty<DoubleKey> =
+        inline fun double(default: Double, build: DoubleBuilder.() -> Unit = {}): ConfigProperty<Double> =
             DoubleBuilder(default).apply(build).build()
+    }
+
+    fun build(): ConfigObject {
+        val nodes: MutableMap<String, ConfigNode> = HashMap()
+        for (it in this::class.nestedClasses) {
+            if (it.isSubclassOf(ConfigDecl::class)) {
+                nodes[it.simpleName!!] = (it.objectInstance!! as ConfigDecl).build()
+            }
+        }
+        for (it in this::class.memberProperties) {
+            @Suppress("UNCHECKED_CAST")
+            val delegate = (it as KProperty1<ConfigDecl, *>).getDelegate(this) ?: continue
+            if (delegate is ConfigNode) {
+                nodes[it.name] = delegate
+            } else {
+                Log.warn("ConfigDecl delegated property '${it.name}' is not a ConfigNode, skipping")
+            }
+        }
+        return ConfigObject(nodes)
     }
 }
 
-open class ConfigBuilder<T>(val default: T) {
+open class ConfigBuilder<T>(val default: T, private val type: KType) {
     var desc: String? = null
 
-    open fun build(): SimpleConfigProperty<T> = SimpleConfigDelegate(default, desc)
+    open fun build(): ConfigProperty<T> = ConfigValue(default, desc, type)
 }
 
-class IntBuilder(default: Int) : ConfigBuilder<Int>(default) {
+class IntBuilder(default: Int) : ConfigBuilder<Int>(default, typeOf<Int>()) {
     var min = Int.MIN_VALUE
     var max = Int.MAX_VALUE
 
-    override fun build(): ConfigProperty<IntKey> = IntDelegate(default, desc, min, max)
+    override fun build(): ConfigProperty<Int> = IntValue(default, desc, min, max)
 }
 
-class LongBuilder(default: Long) : ConfigBuilder<Long>(default) {
+class LongBuilder(default: Long) : ConfigBuilder<Long>(default, typeOf<Long>()) {
     var min = Long.MIN_VALUE
     var max = Long.MAX_VALUE
 
-    override fun build(): ConfigProperty<LongKey> = LongDelegate(default, desc, min, max)
+    override fun build(): ConfigProperty<Long> = LongValue(default, desc, min, max)
 }
 
-class FloatBuilder(default: Float) : ConfigBuilder<Float>(default) {
+class FloatBuilder(default: Float) : ConfigBuilder<Float>(default, typeOf<Float>()) {
     var min = Float.NEGATIVE_INFINITY
     var max = Float.POSITIVE_INFINITY
 
-    override fun build(): ConfigProperty<FloatKey> = FloatDelegate(default, desc, min, max)
+    override fun build(): ConfigProperty<Float> = FloatValue(default, desc, min, max)
 }
 
-class DoubleBuilder(default: Double) : ConfigBuilder<Double>(default) {
+class DoubleBuilder(default: Double) : ConfigBuilder<Double>(default, typeOf<Double>()) {
     var min = Double.NEGATIVE_INFINITY
     var max = Double.POSITIVE_INFINITY
 
-    override fun build(): ConfigProperty<DoubleKey> = DoubleDelegate(default, desc, min, max)
+    override fun build(): ConfigProperty<Double> = DoubleValue(default, desc, min, max)
 }
 
-private sealed class ConfigDelegate<T>(val default: T, val desc: String?) {
-    protected fun getPath(thisRef: Any, property: KProperty<*>): List<String> {
+class ConfigKey<T>(val path: List<String>, val type: KType)
+
+class ConfigHolder(decl: ConfigDecl, private val path: Path) {
+    val root = decl.build()
+
+    inline operator fun <reified T> get(key: ConfigKey<T>) =
+        (key.path.fold(root) { node: ConfigNode, segment ->
+            (node as ConfigObject)[segment] ?: throw MissingNode(segment)
+        } as ConfigValue<*>).value as T
+
+    fun load() {
+        if (path.exists()) {
+            try {
+                root.fromJson(Json.parseToJsonElement(path.readText()))
+            } catch (e: Exception) {
+                Log.error("Error loading config, replacing with default", e)
+                save()
+            }
+        } else {
+            save()
+        }
+    }
+
+    fun save() {
+        try {
+            path.parent?.createDirectories()
+            path.writeText(PrettyJson.encodeToString(root.toJson()))
+        } catch (e: IOException) {
+            Log.error("Error saving config", e)
+        }
+    }
+}
+
+sealed class ConfigNode {
+    abstract fun toJson(): JsonElement
+    abstract fun fromJson(json: JsonElement)
+}
+
+class ConfigObject(private val content: Map<String, ConfigNode>) :
+    ConfigNode(), Map<String, ConfigNode> by content {
+    inline operator fun <reified T> get(key: ConfigKey<T>): T {
+        val node = key.path.fold(this) { node: ConfigNode, name ->
+            (node as ConfigObject)[name] ?: throw MissingNode(name)
+        } as ConfigValue<*>
+        return node.value as T
+    }
+
+    override fun toJson() = JsonObject(mapValues { it.value.toJson() })
+
+    override fun fromJson(json: JsonElement) {
+        for ((key, value) in json.jsonObject) {
+            content[key]?.fromJson(value)
+        }
+    }
+}
+
+open class ConfigValue<T>(
+    val default: T,
+    val desc: String?,
+    val type: KType
+) : ConfigNode(), ConfigProperty<T> {
+    var value = default
+        set(value) {
+            if (!value.isValid) throw InvalidValue(value)
+            field = value
+        }
+
+    override fun getValue(thisRef: Any, property: KProperty<*>) =
+        ConfigKey<T>(getPath(thisRef, property), type)
+
+    fun reset() {
+        value = default
+    }
+
+    override fun toJson() = Json.encodeToJsonElement(serializer(type), value)
+
+    override fun fromJson(json: JsonElement) {
+        Json.decodeFromJsonElement(serializer(type), json)
+    }
+
+    protected open val T.isValid: Boolean get() = true
+
+    private fun getPath(thisRef: Any, property: KProperty<*>): List<String> {
         val path = mutableListOf(property.name)
         var clazz: Class<*>? = thisRef::class.java
         while (clazz != null) {
@@ -77,84 +198,42 @@ private sealed class ConfigDelegate<T>(val default: T, val desc: String?) {
     }
 }
 
-private class SimpleConfigDelegate<T>(default: T, desc: String?) :
-    ConfigDelegate<T>(default, desc), SimpleConfigProperty<T> {
-    override fun getValue(thisRef: Any, property: KProperty<*>) =
-        ConfigKey(getPath(thisRef, property), default)
-}
-
-private class IntDelegate(
+private class IntValue(
     default: Int,
     desc: String?,
     val min: Int,
     val max: Int,
-) : ConfigDelegate<Int>(default, desc), ConfigProperty<IntKey> {
-    override fun getValue(thisRef: Any, property: KProperty<*>) =
-        IntKey(getPath(thisRef, property), default, min, max)
+) : ConfigValue<Int>(default, desc, typeOf<Int>()) {
+    override val Int.isValid: Boolean get() = this in min..max
 }
 
-private class LongDelegate(
+private class LongValue(
     default: Long,
     desc: String?,
     val min: Long,
     val max: Long,
-) : ConfigDelegate<Long>(default, desc), ConfigProperty<LongKey> {
-    override fun getValue(thisRef: Any, property: KProperty<*>) =
-        LongKey(getPath(thisRef, property), default, min, max)
+) : ConfigValue<Long>(default, desc, typeOf<Long>()) {
+    override val Long.isValid: Boolean get() = this in min..max
 }
 
-private class FloatDelegate(
+private class FloatValue(
     default: Float,
     desc: String?,
     val min: Float,
     val max: Float,
-) : ConfigDelegate<Float>(default, desc), ConfigProperty<FloatKey> {
-    override fun getValue(thisRef: Any, property: KProperty<*>) =
-        FloatKey(getPath(thisRef, property), default, min, max)
+) : ConfigValue<Float>(default, desc, typeOf<Float>()) {
+    override val Float.isValid: Boolean get() = this in min..max
 }
 
-private class DoubleDelegate(
+private class DoubleValue(
     default: Double,
     desc: String?,
     val min: Double,
     val max: Double,
-) : ConfigDelegate<Double>(default, desc), ConfigProperty<DoubleKey> {
-    override fun getValue(thisRef: Any, property: KProperty<*>) =
-        DoubleKey(getPath(thisRef, property), default, min, max)
+) : ConfigValue<Double>(default, desc, typeOf<Double>()) {
+    override val Double.isValid: Boolean get() = this in min..max
 }
 
-open class ConfigKey<T>(val path: List<String>, val default: T)
+class MissingNode(val path: String) : Exception("Node '$path' does not exist")
 
-class IntKey(
-    path: List<String>,
-    default: Int,
-    val min: Int,
-    val max: Int,
-) : ConfigKey<Int>(path, default)
-
-class LongKey(
-    path: List<String>,
-    default: Long,
-    val min: Long,
-    val max: Long,
-) : ConfigKey<Long>(path, default)
-
-class FloatKey(
-    path: List<String>,
-    default: Float,
-    val min: Float,
-    val max: Float,
-) : ConfigKey<Float>(path, default)
-
-class DoubleKey(
-    path: List<String>,
-    default: Double,
-    val min: Double,
-    val max: Double,
-) : ConfigKey<Double>(path, default)
-
-private sealed class ConfigNode
-
-private class ConfigObject(val entries: Map<ConfigKey<*>, ConfigNode>) : ConfigNode()
-
-private class ConfigValue<T>(val value: T) : ConfigNode()
+class InvalidValue(val value: Any?) : Exception("Config value '$value' is not valid for this node")

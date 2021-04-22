@@ -8,7 +8,7 @@ import kotlin.reflect.typeOf
 
 class ConfigImplTest : FunSpec({
     test("ConfigProperty should generate full path") {
-        Outer.Inner.prop.path shouldBe listOf("Outer", "Inner", "prop")
+        Outer.Inner.prop.path shouldBe listOf("Inner", "prop")
     }
 
     test("ConfigProperty should have correct class") {

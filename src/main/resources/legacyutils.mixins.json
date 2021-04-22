@@ -11,6 +11,7 @@
     "MinecraftClientMixin",
     "gui.AchievementNotificationMixin",
     "gui.IngameHudMixin",
+    "gui.InventoryScreenMixin",
     "gui.OptionsScreenMixin",
     "gui.ResourcePackScreenMixin",
     "gui.TitleScreenMixin"

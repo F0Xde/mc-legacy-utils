@@ -9,12 +9,13 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException
 import com.mojang.brigadier.tree.LiteralCommandNode
 import net.minecraft.client.network.ClientPlayerEntity
 
+typealias LegacyCommandDispatcher = CommandDispatcher<LegacyCommandSource>
 typealias LegacyLiteralArgBuilder = LiteralArgumentBuilder<LegacyCommandSource>
 
 object LegacyCommandManager {
     const val PREFIX = "."
 
-    private val dispatcher = CommandDispatcher<LegacyCommandSource>()
+    val dispatcher = LegacyCommandDispatcher()
 
     fun execute(command: String, player: ClientPlayerEntity) {
         execute(command, LegacyCommandSource(player))

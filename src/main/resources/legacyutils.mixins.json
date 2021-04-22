@@ -11,10 +11,11 @@
     "MinecraftClientMixin",
     "gui.AchievementNotificationMixin",
     "gui.IngameHudMixin",
-    "gui.InventoryScreenMixin",
-    "gui.OptionsScreenMixin",
-    "gui.ResourcePackScreenMixin",
-    "gui.TitleScreenMixin"
+    "gui.screen.ChatScreenMixin",
+    "gui.screen.InventoryScreenMixin",
+    "gui.screen.OptionsScreenMixin",
+    "gui.screen.ResourcePackScreenMixin",
+    "gui.screen.TitleScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

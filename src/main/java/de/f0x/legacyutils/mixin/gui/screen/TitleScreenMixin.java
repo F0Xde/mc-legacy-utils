@@ -1,4 +1,4 @@
-package de.f0x.legacyutils.mixin.gui;
+package de.f0x.legacyutils.mixin.gui.screen;
 
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;

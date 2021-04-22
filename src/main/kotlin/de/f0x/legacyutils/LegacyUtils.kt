@@ -2,7 +2,7 @@ package de.f0x.legacyutils
 
 import de.f0x.legacyutils.command.literal
 import de.f0x.legacyutils.command.register
-import de.f0x.legacyutils.config.ConfigManagerOld
+import de.f0x.legacyutils.config.ConfigManager
 import kotlinx.serialization.json.Json
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -13,7 +13,7 @@ val Log: Logger = LogManager.getLogger("legacyutils")
 val PrettyJson = Json { prettyPrint = true }
 
 fun init() {
-    ConfigManagerOld.load()
+    ConfigManager.load()
 
     literal("test1").executes {
         it.source.send("Yoo")

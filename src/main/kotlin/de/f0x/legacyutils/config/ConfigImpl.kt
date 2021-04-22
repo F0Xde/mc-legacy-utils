@@ -24,6 +24,7 @@ import kotlin.reflect.jvm.isAccessible
 import kotlin.reflect.typeOf
 
 typealias ConfigProperty<T> = ReadOnlyProperty<Any, ConfigKey<T>>
+typealias ConfigObserver<T> = (node: ConfigValue<T>, old: T, new: T) -> Unit
 
 abstract class ConfigDecl {
     companion object {
@@ -107,15 +108,28 @@ class DoubleBuilder(default: Double) : ConfigBuilder<Double>(default, typeOf<Dou
     override fun build(): ConfigProperty<Double> = DoubleValue(default, desc, min, max)
 }
 
-class ConfigKey<T>(val path: List<String>, val type: KType)
+// Very fucking weird but I want KType and nice generic parameter
+data class ConfigKey<T> internal constructor(val path: List<String>, val type: KType)
 
 class ConfigHolder(decl: ConfigDecl, private val path: Path) {
-    val root = decl.build()
+    private val root = decl.build()
 
-    inline operator fun <reified T> get(key: ConfigKey<T>) =
-        (key.path.fold(root) { node: ConfigNode, segment ->
+    operator fun <T> get(key: ConfigKey<T>) = ConfigItem(getVal(key))
+
+    fun <T> observe(key: ConfigKey<T>, observer: ConfigObserver<T>) =
+        getVal(key).observe(observer)
+
+    private fun <T> getVal(key: ConfigKey<T>): ConfigValue<T> {
+        val node = key.path.fold(root) { node: ConfigNode, segment ->
             (node as ConfigObject)[segment] ?: throw MissingNode(segment)
-        } as ConfigValue<*>).value as T
+        } as ConfigValue<*>
+        if (node.type != key.type) {
+            throw IllegalArgumentException("ConfigKey '$key' is not valid for this config")
+        }
+        @Suppress("UNCHECKED_CAST")
+        return node as ConfigValue<T>
+    }
+
 
     fun load() {
         if (path.exists()) {
@@ -126,6 +140,7 @@ class ConfigHolder(decl: ConfigDecl, private val path: Path) {
                 save()
             }
         } else {
+            Log.info("Config does not exist, writing default")
             save()
         }
     }
@@ -138,6 +153,11 @@ class ConfigHolder(decl: ConfigDecl, private val path: Path) {
             Log.error("Error saving config", e)
         }
     }
+}
+
+class ConfigItem<T>(private val node: ConfigValue<T>) : ReadOnlyProperty<Any?, T> {
+    fun get() = node.value
+    override fun getValue(thisRef: Any?, property: KProperty<*>) = get()
 }
 
 sealed class ConfigNode {
@@ -172,9 +192,12 @@ open class ConfigValue<T>(
     val desc: String?,
     val type: KType
 ) : ConfigNode(), ConfigProperty<T> {
+    private val observers = mutableListOf<ConfigObserver<T>>()
+
     var value = default
         set(value) {
             if (!value.isValid) throw InvalidValue(value)
+            observers.forEach { it(this, field, value) }
             field = value
         }
 
@@ -185,10 +208,15 @@ open class ConfigValue<T>(
         value = default
     }
 
+    fun observe(observer: ConfigObserver<T>) {
+        observers.add(observer)
+    }
+
     override fun toJson() = Json.encodeToJsonElement(serializer(type), value)
 
     override fun fromJson(json: JsonElement) {
-        Json.decodeFromJsonElement(serializer(type), json)
+        @Suppress("UNCHECKED_CAST")
+        value = Json.decodeFromJsonElement(serializer(type), json) as T
     }
 
     protected open val T.isValid: Boolean get() = true
@@ -200,6 +228,7 @@ open class ConfigValue<T>(
             path.add(clazz.simpleName)
             clazz = clazz.enclosingClass
         }
+        path.removeLast()
         return path.asReversed()
     }
 }

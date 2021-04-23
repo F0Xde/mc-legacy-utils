@@ -28,7 +28,7 @@ typealias ConfigObserver<T> = (node: ConfigValue<T>, old: T, new: T) -> Unit
 
 abstract class ConfigDecl {
     companion object {
-        inline fun <reified T : Any> config(
+        inline fun <reified T> config(
             default: T,
             build: ConfigBuilder<T>.() -> Unit = {}
         ): ConfigProperty<T> =
@@ -112,7 +112,7 @@ class DoubleBuilder(default: Double) : ConfigBuilder<Double>(default, typeOf<Dou
 data class ConfigKey<T> internal constructor(val path: List<String>, val type: KType)
 
 class ConfigHolder(decl: ConfigDecl, private val path: Path) {
-    private val root = decl.build()
+    val root = decl.build()
 
     operator fun <T> get(key: ConfigKey<T>) = ConfigItem(getVal(key))
 
@@ -204,6 +204,12 @@ open class ConfigValue<T>(
     override fun getValue(thisRef: Any, property: KProperty<*>) =
         ConfigKey<T>(getPath(thisRef, property), type)
 
+    @Suppress("unchecked_cast")
+    fun set(value: Any?) {
+        // TODO check with `type`
+        this.value = value as T
+    }
+
     fun reset() {
         value = default
     }
@@ -233,7 +239,7 @@ open class ConfigValue<T>(
     }
 }
 
-private class IntValue(
+class IntValue(
     default: Int,
     desc: String?,
     val min: Int,
@@ -242,7 +248,7 @@ private class IntValue(
     override val Int.isValid: Boolean get() = this in min..max
 }
 
-private class LongValue(
+class LongValue(
     default: Long,
     desc: String?,
     val min: Long,
@@ -251,7 +257,7 @@ private class LongValue(
     override val Long.isValid: Boolean get() = this in min..max
 }
 
-private class FloatValue(
+class FloatValue(
     default: Float,
     desc: String?,
     val min: Float,
@@ -260,7 +266,7 @@ private class FloatValue(
     override val Float.isValid: Boolean get() = this in min..max
 }
 
-private class DoubleValue(
+class DoubleValue(
     default: Double,
     desc: String?,
     val min: Double,

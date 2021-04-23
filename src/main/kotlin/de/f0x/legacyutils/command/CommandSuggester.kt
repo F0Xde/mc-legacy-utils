@@ -11,7 +11,7 @@ import org.lwjgl.input.Keyboard
 import java.util.concurrent.CompletableFuture
 import kotlin.math.min
 
-class CommandSuggestor(
+class CommandSuggester(
     private val client: MinecraftClient,
     private val textField: TextFieldWidget,
 ) : DrawableHelper(), PagedEntryListWidget.Listener {
@@ -57,7 +57,6 @@ class CommandSuggestor(
     private val Suggestions.lines get() = min(list.size, 10)
 
     override fun setBooleanValue(id: Int, value: Boolean) {}
-
     override fun setFloatValue(id: Int, value: Float) {}
 
     override fun setStringValue(id: Int, text: String) {

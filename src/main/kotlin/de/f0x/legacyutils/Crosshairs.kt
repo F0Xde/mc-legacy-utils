@@ -1,5 +1,6 @@
 package de.f0x.legacyutils
 
+import com.mojang.blaze3d.platform.GlStateManager
 import de.f0x.legacyutils.config.Config.Crosshair
 import de.f0x.legacyutils.config.ConfigManager
 import net.minecraft.client.gui.DrawableHelper
@@ -32,6 +33,7 @@ class CrosshairRenderer : DrawableHelper() {
             val yHor = (window.scaledHeight - thickness) / 2
             fill(xHor - width, yHor, xHor, yHor + thickness, color)
             fill(xHor + gap, yHor, xHor + gap + width, yHor + thickness, color)
+            GlStateManager.color3f(1f, 1f, 1f)
         }
     }
 }

@@ -1,4 +1,4 @@
-package de.f0x.legacyutils.mixin;
+package de.f0x.legacyutils.mixin.render;
 
 import de.f0x.legacyutils.config.Config;
 import de.f0x.legacyutils.config.ConfigItem;

@@ -9,6 +9,7 @@ object Config : ConfigDecl() {
     val fullBright by bool()
     val noAchievementNotification by bool()
     val noPumpkinBlur by bool()
+    val ownNameTag by bool()
 
     object Crosshair : ConfigDecl() {
         val type by config(CrosshairType.VANILLA)

@@ -8,7 +8,6 @@
     "ClientPlayerEntityMixin",
     "FormattingAccessor",
     "GameOptionsMixin",
-    "GameRendererMixin",
     "MinecraftClientMixin",
     "gui.AchievementNotificationMixin",
     "gui.InGameHudMixin",
@@ -16,7 +15,9 @@
     "gui.screen.InventoryScreenMixin",
     "gui.screen.OptionsScreenMixin",
     "gui.screen.ResourcePackScreenMixin",
-    "gui.screen.TitleScreenMixin"
+    "gui.screen.TitleScreenMixin",
+    "render.GameRendererMixin",
+    "render.LivingEntityRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

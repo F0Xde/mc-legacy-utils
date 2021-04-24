@@ -1,8 +1,10 @@
 package de.f0x.legacyutils.command
 
 import com.mojang.brigadier.arguments.*
+import de.f0x.legacyutils.Color
 import de.f0x.legacyutils.config.*
 import kotlin.reflect.KClass
+import kotlin.reflect.full.isSubtypeOf
 import kotlin.reflect.typeOf
 
 fun ConfigHolder.registerCommands() {
@@ -58,7 +60,13 @@ private val <T> ConfigValue<T>.argumentType: ArgumentType<T>
             when (type) {
                 typeOf<Boolean>() -> BoolArgumentType.bool()
                 typeOf<String>() -> StringArgumentType.string()
-                else -> throw IllegalStateException("No ArgumentType for '$type' exists")
+                typeOf<Color>() -> ColorArgumentType()
+                // disgusting but I can't help myself
+                else -> if (type.isSubtypeOf(typeOf<Enum<*>>())) {
+                    EnumArgumentType((type.classifier as KClass<*>).java.enumConstants as Array<out Enum<*>>)
+                } else {
+                    throw IllegalStateException("No ArgumentType for '$type' exists")
+                }
             }
         }
     } as ArgumentType<T>

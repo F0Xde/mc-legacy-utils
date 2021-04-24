@@ -80,6 +80,7 @@ java {
 kotlin {
     sourceSets.all {
         languageSettings.useExperimentalAnnotation("kotlin.ExperimentalStdlibApi")
+        languageSettings.useExperimentalAnnotation("kotlin.ExperimentalUnsignedTypes")
         languageSettings.useExperimentalAnnotation("kotlin.io.path.ExperimentalPathApi")
     }
 }

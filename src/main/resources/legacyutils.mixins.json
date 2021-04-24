@@ -6,11 +6,12 @@
   "client": [
     "AbstractFileResourcePackMixin",
     "ClientPlayerEntityMixin",
+    "FormattingAccessor",
     "GameOptionsMixin",
     "GameRendererMixin",
     "MinecraftClientMixin",
     "gui.AchievementNotificationMixin",
-    "gui.IngameHudMixin",
+    "gui.InGameHudMixin",
     "gui.screen.ChatScreenMixin",
     "gui.screen.InventoryScreenMixin",
     "gui.screen.OptionsScreenMixin",

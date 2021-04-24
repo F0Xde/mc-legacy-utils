@@ -15,13 +15,10 @@ import kotlin.io.path.exists
 import kotlin.io.path.readText
 import kotlin.io.path.writeText
 import kotlin.properties.ReadOnlyProperty
-import kotlin.reflect.KProperty
-import kotlin.reflect.KProperty1
-import kotlin.reflect.KType
+import kotlin.reflect.*
 import kotlin.reflect.full.isSubclassOf
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.isAccessible
-import kotlin.reflect.typeOf
 
 typealias ConfigProperty<T> = ReadOnlyProperty<Any, ConfigKey<T>>
 typealias ConfigObserver<T> = (node: ConfigValue<T>, old: T, new: T) -> Unit
@@ -204,10 +201,9 @@ open class ConfigValue<T>(
     override fun getValue(thisRef: Any, property: KProperty<*>) =
         ConfigKey<T>(getPath(thisRef, property), type)
 
-    @Suppress("unchecked_cast")
     fun set(value: Any?) {
-        // TODO check with `type`
-        this.value = value as T
+        @Suppress("unchecked_cast")
+        this.value = (type.classifier as KClass<*>).cast(value) as T
     }
 
     fun reset() {
@@ -221,7 +217,7 @@ open class ConfigValue<T>(
     override fun toJson() = Json.encodeToJsonElement(serializer(type), value)
 
     override fun fromJson(json: JsonElement) {
-        @Suppress("UNCHECKED_CAST")
+        @Suppress("unchecked_cast")
         value = Json.decodeFromJsonElement(serializer(type), json) as T
     }
 

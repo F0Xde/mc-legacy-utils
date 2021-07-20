@@ -2,9 +2,9 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.util.function.Function
 
 plugins {
-    kotlin("jvm") version "1.4.31"
-    kotlin("plugin.serialization") version "1.4.31"
-    id("fabric-loom") version "0.6-SNAPSHOT"
+    kotlin("jvm") version "1.5.20"
+    kotlin("plugin.serialization") version "1.5.20"
+    id("fabric-loom") version "0.7-SNAPSHOT"
     `maven-publish`
 }
 
@@ -12,8 +12,8 @@ version = "0.1.0"
 group = "de.f0x"
 
 repositories {
-    mavenCentral()
     maven("https://maven.legacyfabric.net")
+    mavenCentral()
     maven("https://libraries.minecraft.net")
 }
 
@@ -23,16 +23,17 @@ minecraft {
     }
 }
 
-val loaderDep = "net.fabricmc:fabric-loader-1.8.9:0.11.1+build.202102220648"
+val loaderDep = "net.fabricmc:fabric-loader-1.8.9:0.11.1+build.202106271747"
 
 dependencies {
     implementation("com.google.guava:guava:23.5-jre")
     minecraft("com.mojang:minecraft:1.8.9")
-    mappings("net.fabricmc:yarn:1.8.9+build.202104081552:v2")
+    mappings("net.fabricmc:yarn:1.8.9+build.202107080308:v2")
     modImplementation(loaderDep) {
         exclude(module = "guava")
     }
-    modImplementation("net.fabricmc:fabric-language-kotlin:1.5.0+kotlin.1.4.31")
+    modImplementation("net.fabricmc:fabric-language-kotlin:1.6.2+kotlin.1.5.20")
+    modImplementation("net.legacyfabric.legacy-fabric-api:legacy-fabric-api:1.1.0+1.8.9")
 
     implInclude("com.mojang:brigadier:1.0.17")
 

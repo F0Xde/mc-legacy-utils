@@ -40,6 +40,9 @@ abstract class ConfigDecl {
         inline fun int(default: Int, build: IntBuilder.() -> Unit = {}): ConfigProperty<Int> =
             IntBuilder(default).apply(build).build()
 
+        inline fun uint(default: Int, build: IntBuilder.() -> Unit = {}): ConfigProperty<Int> =
+            IntBuilder(default).apply { min = 0 }.apply(build).build()
+
         inline fun long(default: Long, build: LongBuilder.() -> Unit = {}): ConfigProperty<Long> =
             LongBuilder(default).apply(build).build()
 

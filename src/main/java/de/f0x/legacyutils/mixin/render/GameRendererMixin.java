@@ -45,6 +45,14 @@ public abstract class GameRendererMixin {
     }
 
     @Redirect(
+            method = {"render", "tick"},
+            at = @At(value = "FIELD", target = "Lnet/minecraft/client/options/GameOptions;sensitivity:F")
+    )
+    float getSensitivity(GameOptions options) {
+        return options.sensitivity / (KeyBindings.INSTANCE.getZoom().isPressed() ? zoomFovDivisor.get() : 1);
+    }
+
+    @Redirect(
             method = "updateLightmap",
             at = @At(value = "FIELD", target = "Lnet/minecraft/client/options/GameOptions;gamma:F")
     )

@@ -25,7 +25,7 @@ object Config : ConfigDecl() {
     }
 
     object Zoom : ConfigDecl() {
-        val fovDivisor by uint(4)
+        val fovDivisor by float(4f) { min = 1 / Float.MAX_VALUE }
     }
 }
 

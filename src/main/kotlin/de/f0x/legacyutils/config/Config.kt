@@ -27,6 +27,10 @@ object Config : ConfigDecl() {
     object Zoom : ConfigDecl() {
         val fovDivisor by float(4f) { min = 1 / Float.MAX_VALUE }
     }
+
+    object Hypixel : ConfigDecl() {
+        val hideJoins by bool()
+    }
 }
 
 val ConfigManager = ConfigHolder(Config, Paths.get("legacyutils.json"))

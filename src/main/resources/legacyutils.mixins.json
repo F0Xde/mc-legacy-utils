@@ -17,6 +17,7 @@
     "gui.screen.ResourcePackScreenMixin",
     "gui.screen.TitleScreenMixin",
     "render.EntityRenderDispatcherMixin",
+    "ClientPlayNetworkHandlerMixin",
     "render.GameRendererMixin",
     "render.LivingEntityRendererMixin"
   ],

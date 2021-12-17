@@ -11,7 +11,6 @@ data class Color(
     val value: Int
         get() = (if (isRainbow) rainbow() else rgb) or ((alpha and 0xFF) shl 24)
 
-    @ExperimentalUnsignedTypes
     override fun toString() =
         "${if (isRainbow) "rainbow" else '#' + rgb.toUInt().toString(16)}, alpha = ${alpha.toUByte()}"
 }

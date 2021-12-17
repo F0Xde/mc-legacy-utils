@@ -32,4 +32,4 @@ fun ClientPlayerEntity.send(text: Text, prefixed: Boolean = true) {
 val Formatting.code get() = (this as FormattingAccessor).code
 
 val Formatting.colorValue: Int
-    get() = MinecraftClient.getInstance().textRenderer.method_2398(code)
+    get() = MinecraftClient.getInstance().textRenderer.method_9418(code)

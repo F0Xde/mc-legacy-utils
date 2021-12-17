@@ -29,12 +29,12 @@ public abstract class InGameHudMixin extends DrawableHelper {
         method = "render",
         at = @At(
             value = "INVOKE",
-            target = "Lnet/minecraft/client/util/Window;getScaledWidth()I"
+            target = "Lnet/minecraft/client/util/Window;getWidth()I"
         )
     )
     int setWindow(Window window) {
         this.window = window;
-        return window.getScaledWidth();
+        return window.getWidth();
     }
 
     @Redirect(

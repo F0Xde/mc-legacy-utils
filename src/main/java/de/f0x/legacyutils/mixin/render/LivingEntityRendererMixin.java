@@ -23,7 +23,7 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity> extends 
         super(dispatcher);
     }
 
-    @Inject(method = "hasLabel", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "hasLabel(Lnet/minecraft/entity/LivingEntity;)Z", at = @At("HEAD"), cancellable = true)
     void hasOwnLabel(T entity, CallbackInfoReturnable<Boolean> cir) {
         if (ownNameTag.get() && entity.equals(client.getCameraEntity())) {
             cir.setReturnValue(true);

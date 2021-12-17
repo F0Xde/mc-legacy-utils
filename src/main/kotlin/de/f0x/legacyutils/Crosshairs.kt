@@ -24,13 +24,13 @@ class CrosshairRenderer : DrawableHelper() {
         if (type == CrosshairType.CROSS) {
             val color = color.value
 
-            val xVert = (window.scaledWidth - thickness) / 2
-            val yVert = (window.scaledHeight - gap) / 2
+            val xVert = (window.width - thickness) / 2
+            val yVert = (window.height - gap) / 2
             fill(xVert, yVert - height, xVert + thickness, yVert, color)
             fill(xVert, yVert + gap, xVert + thickness, yVert + gap + height, color)
 
-            val xHor = (window.scaledWidth - gap) / 2
-            val yHor = (window.scaledHeight - thickness) / 2
+            val xHor = (window.width - gap) / 2
+            val yHor = (window.height - thickness) / 2
             fill(xHor - width, yHor, xHor, yHor + thickness, color)
             fill(xHor + gap, yHor, xHor + gap + width, yHor + thickness, color)
             GlStateManager.color3f(1f, 1f, 1f)

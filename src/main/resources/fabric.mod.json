@@ -23,8 +23,7 @@
   ],
   "depends": {
     "minecraft": "1.8.x",
-    "fabricloader": ">=0.7.4",
-    "fabric-language-kotlin": ">=1.5.0+kotlin.1.4.31",
-    "legacy-fabric-api": ">=1.0.0"
+    "fabricloader": ">=0.9.0",
+    "fabric-language-kotlin": ">=1.7.0+kotlin.1.6.0"
   }
 }

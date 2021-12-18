@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(EntityRenderDispatcher.class)
 public abstract class EntityRenderDispatcherMixin {
     @Shadow
-    public float field_2102;
+    public float field_2103;
 
     @Shadow
     public GameOptions field_2104;
@@ -19,7 +19,7 @@ public abstract class EntityRenderDispatcherMixin {
     @Inject(method = "method_10200", at = @At("RETURN"))
     void adjustViewPitch(CallbackInfo ci) {
         if (field_2104.perspective == 2) {
-            field_2102 = -field_2102;
+            field_2103 = -field_2103;
         }
     }
 }

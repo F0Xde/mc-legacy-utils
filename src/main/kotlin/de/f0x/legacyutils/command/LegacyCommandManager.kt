@@ -7,7 +7,7 @@ import com.mojang.brigadier.builder.RequiredArgumentBuilder
 import com.mojang.brigadier.context.CommandContext
 import com.mojang.brigadier.exceptions.CommandSyntaxException
 import com.mojang.brigadier.tree.LiteralCommandNode
-import net.minecraft.client.network.ClientPlayerEntity
+import net.minecraft.entity.player.ClientPlayerEntity
 
 typealias LegacyCommandDispatcher = CommandDispatcher<LegacyCommandSource>
 typealias LegacyLiteralArgBuilder = LiteralArgumentBuilder<LegacyCommandSource>

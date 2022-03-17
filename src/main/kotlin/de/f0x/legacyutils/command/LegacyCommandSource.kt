@@ -1,7 +1,7 @@
 package de.f0x.legacyutils.command
 
 import de.f0x.legacyutils.util.send
-import net.minecraft.client.network.ClientPlayerEntity
+import net.minecraft.entity.player.ClientPlayerEntity
 import net.minecraft.text.Text
 
 class LegacyCommandSource(val player: ClientPlayerEntity) {

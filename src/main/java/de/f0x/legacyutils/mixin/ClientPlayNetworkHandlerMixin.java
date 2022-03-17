@@ -13,14 +13,16 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(ClientPlayNetworkHandler.class)
 public abstract class ClientPlayNetworkHandlerMixin {
-    @Shadow @Final private static Logger LOGGER;
+    @Shadow
+    @Final
+    private static Logger LOGGER;
 
     @Redirect(
-        method = "onChatMessage",
-        at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/hud/ChatHud;addMessage(Lnet/minecraft/text/Text;)V"
-        )
+            method = "onChatMessage",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/gui/hud/ChatHud;addMessage(Lnet/minecraft/text/Text;)V"
+            )
     )
     void addMessage(ChatHud chat, Text message) {
         String string = message.getString();
@@ -28,7 +30,6 @@ public abstract class ClientPlayNetworkHandlerMixin {
             LOGGER.info("Join message '{}' hidden", string);
         } else {
             chat.addMessage(message);
-
         }
     }
 }

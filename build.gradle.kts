@@ -2,8 +2,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.util.function.Function
 
 plugins {
-    kotlin("jvm") version "1.6.0"
-    kotlin("plugin.serialization") version "1.6.0"
+    kotlin("jvm") version "1.6.10"
+    kotlin("plugin.serialization") version "1.6.10"
     id("fabric-loom") version "0.7-SNAPSHOT"
     `maven-publish`
 }
@@ -25,10 +25,10 @@ minecraft {
 
 dependencies {
     minecraft("com.mojang:minecraft:1.8.9")
-    mappings("net.fabricmc:yarn:1.8.9+build.202112162000:v2")
+    mappings("net.fabricmc:yarn:1.8.9+build.202202221430:v2")
     modImplementation("net.fabricmc:fabric-loader:0.12.12")
 
-    modImplementation("net.fabricmc:fabric-language-kotlin:1.7.0+kotlin.1.6.0")
+    modImplementation("net.fabricmc:fabric-language-kotlin:1.7.1+kotlin.1.6.10")
 
     implInclude("com.mojang:brigadier:1.0.18")
 
@@ -38,7 +38,7 @@ dependencies {
         implementation("org.lwjgl.lwjgl:lwjgl-platform:2.9.4-nightly-20150209")
     }
 
-    val kotestVersion = "5.0.1"
+    val kotestVersion = "5.2.0"
     testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
     testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
     testImplementation("io.kotest:kotest-property:$kotestVersion")

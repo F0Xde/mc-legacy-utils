@@ -3,8 +3,8 @@ package de.f0x.legacyutils.util
 import de.f0x.legacyutils.CHAT_PREFIX
 import de.f0x.legacyutils.mixin.FormattingAccessor
 import net.minecraft.client.MinecraftClient
-import net.minecraft.client.network.ClientPlayerEntity
 import net.minecraft.entity.Entity
+import net.minecraft.entity.player.ClientPlayerEntity
 import net.minecraft.text.LiteralText
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting

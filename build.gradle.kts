@@ -8,7 +8,7 @@ plugins {
     `maven-publish`
 }
 
-version = "0.3.1"
+version = "0.3.2"
 group = "de.f0x"
 
 repositories {
